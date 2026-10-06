@@ -1,6 +1,6 @@
-# VentureDesk
+# Multi-Agent AI System for Business Operations
 
-An AI launch team for your business idea. Describe an idea and a team of Claude-powered agents turns it into an actionable launch plan, with you approving the work before it's finalised.
+VentureDesk is an AI launch team for your business idea. Describe an idea and a team of Claude-powered agents turns it into an actionable launch plan, with you approving the work before it's finalised.
 
 ## How it works
 
