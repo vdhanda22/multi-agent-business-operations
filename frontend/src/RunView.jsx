@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from './api.js'
+import ActivityLog from './ActivityLog.jsx'
 import Markdown from './Markdown.jsx'
 import { BUSY, STATUS_LABELS, STEPS } from './status.js'
 
@@ -28,12 +29,12 @@ function Section({ title, subtitle, text, writing }) {
         {subtitle && <span className="muted">{subtitle}</span>}
         {writing && <span className="pill live">writing…</span>}
       </header>
-      {text ? <Markdown text={text} /> : <p className="muted">{writing ? 'Thinking…' : 'Waiting for the brief'}</p>}
+      {text ? <Markdown text={text} /> : <p className="muted">{writing ? 'Thinking…' : 'Waiting for research'}</p>}
     </article>
   )
 }
 
-function ApprovalPanel({ run, team }) {
+function ApprovalPanel({ run, specialists }) {
   const [feedback, setFeedback] = useState({})
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
@@ -58,7 +59,7 @@ function ApprovalPanel({ run, team }) {
         Read the reviewer's notes above. Approve to get the final plan, or tell specific specialists what to change.
       </p>
       <div className="feedback-grid">
-        {team.map((m) => (
+        {specialists.map((m) => (
           <label key={m.key}>
             {m.title}
             <textarea
@@ -87,7 +88,7 @@ function downloadMarkdown(run) {
   const blob = new Blob([run.sections.final], { type: 'text/markdown' })
   const a = document.createElement('a')
   a.href = URL.createObjectURL(blob)
-  a.download = `${(run.company || 'launch-plan').toLowerCase().replace(/\W+/g, '-')}.md`
+  a.download = `${(run.company || 'plan').toLowerCase().replace(/\W+/g, '-')}.md`
   a.click()
   URL.revokeObjectURL(a.href)
 }
@@ -97,6 +98,8 @@ export default function RunView({ runId }) {
   const [writing, setWriting] = useState(new Set())
   const [team, setTeam] = useState([])
   const [lost, setLost] = useState(false)
+  const [activity, setActivity] = useState([])
+  const [tab, setTab] = useState('work')
 
   useEffect(() => {
     api.team().then(setTeam).catch(() => {})
@@ -117,7 +120,10 @@ export default function RunView({ runId }) {
     source.onerror = () => setLost(true)
     source.onmessage = (e) => {
       const ev = JSON.parse(e.data)
-      if (ev.type === 'snapshot') setRun(ev.run)
+      if (ev.type === 'snapshot') {
+        setRun(ev.run)
+        setActivity(ev.activity)
+      } else if (ev.type === 'activity') setActivity((a) => [...a, ev.entry])
       else if (ev.type === 'status') setRun((r) => r && { ...r, status: ev.status })
       else if (ev.type === 'section_start') {
         setSection(ev.section, () => '')
@@ -135,11 +141,17 @@ export default function RunView({ runId }) {
 
   const s = run.sections
   const busy = BUSY.has(run.status)
+  const specialists = team.filter((m) => m.stage === 'specialist')
 
   return (
     <div className="run">
       <div className="run-head">
         <div>
+          {run.business_id && (
+            <a href={`#/business/${run.business_id}`} className="muted back">
+              ← {run.company}
+            </a>
+          )}
           <h1>{run.company || 'Untitled venture'}</h1>
           <p className="muted idea">{run.idea}</p>
         </div>
@@ -151,29 +163,53 @@ export default function RunView({ runId }) {
       {lost && busy && <p className="error">Lost connection to the backend, retrying…</p>}
       {run.status === 'failed' && <p className="error">Something went wrong: {run.error}</p>}
 
-      {s.final !== undefined && (
+      <div className="tabs">
+        <button className={tab === 'work' ? 'active' : ''} onClick={() => setTab('work')}>
+          Team output
+        </button>
+        <button className={tab === 'log' ? 'active' : ''} onClick={() => setTab('log')}>
+          Activity log <span className="count">{activity.length}</span>
+        </button>
+      </div>
+
+      {tab === 'log' && <ActivityLog entries={activity} />}
+
+      {tab === 'work' && s.final !== undefined && (
         <section className="card final">
           <header>
-            <h2>Launch plan</h2>
+            <h2>Final plan</h2>
             {run.status === 'done' && <button onClick={() => downloadMarkdown(run)}>Download .md</button>}
           </header>
           <Markdown text={s.final} />
         </section>
       )}
 
-      <Section title="Strategy brief" subtitle="Lead Strategist" text={s.brief} writing={writing.has('brief')} />
+      {tab === 'work' && (
+        <>
+          <Section title="Strategy brief" subtitle="Lead Strategist" text={s.brief} writing={writing.has('brief')} />
 
-      <div className="specialists">
-        {team.map((m) => (
-          <Section key={m.key} title={m.title} subtitle={m.focus} text={s[m.key]} writing={writing.has(m.key)} />
-        ))}
-      </div>
+          {s.research !== undefined && (
+            <Section
+              title="Market research"
+              subtitle="Research Lead · live web search"
+              text={s.research}
+              writing={writing.has('research')}
+            />
+          )}
 
-      {s.review !== undefined && (
-        <Section title="Review" subtitle="Cross-checks the team's work" text={s.review} writing={writing.has('review')} />
+          <div className="specialists">
+            {specialists.map((m) => (
+              <Section key={m.key} title={m.title} subtitle={m.focus} text={s[m.key]} writing={writing.has(m.key)} />
+            ))}
+          </div>
+
+          {s.review !== undefined && (
+            <Section title="Review" subtitle="Cross-checks the team's work" text={s.review} writing={writing.has('review')} />
+          )}
+
+          {run.status === 'awaiting_approval' && <ApprovalPanel run={run} specialists={specialists} />}
+        </>
       )}
-
-      {run.status === 'awaiting_approval' && <ApprovalPanel run={run} team={team} />}
     </div>
   )
 }

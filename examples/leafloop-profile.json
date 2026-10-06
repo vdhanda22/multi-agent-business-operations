@@ -1,0 +1,26 @@
+{
+  "name": "LeafLoop",
+  "description": "Plant-as-a-service for offices in Bangalore. We deliver, maintain and swap live plants for companies of 10-200 people on a monthly subscription. 40 customers, 3 field staff, founded 2025.",
+  "documents": [
+    {
+      "kind": "sop",
+      "title": "Pricing SOP",
+      "content": "# Pricing SOP\n\n- Plans: Starter (10 plants) Rs 4,000/month, Growth (25 plants) Rs 9,000/month, Custom above 25 plants.\n- Discounts: maximum 15% and only for annual prepayment. Never discount the first month.\n- Any custom quote above Rs 50,000/month needs founder approval.\n"
+    },
+    {
+      "kind": "sop",
+      "title": "Customer Onboarding SOP",
+      "content": "# Customer Onboarding SOP\n\n1. Site visit within 3 working days of signup (light levels, AC, footfall).\n2. Plant plan sent within 48 hours of the visit.\n3. Installation on a weekday before 10am so offices aren't disrupted.\n4. First maintenance visit 7 days after install, then every 2 weeks.\n5. Every customer gets a WhatsApp group with their field staff member.\n"
+    },
+    {
+      "kind": "sop",
+      "title": "Plant Replacement SOP",
+      "content": "# Plant Replacement SOP\n\n- Any plant below health score 3/5 at a maintenance visit is swapped within 5 working days at no cost.\n- Quarterly swap: rotate 30% of plants every quarter to keep the space fresh.\n- Removed plants go to the nursery for recovery; log every swap in the tracker sheet.\n"
+    },
+    {
+      "kind": "knowledge",
+      "title": "Company facts",
+      "content": "# Company facts\n\n- Nursery partner: Green Roots, Hoskote. Supply cost averages 35% of plan price.\n- Field staff cost: Rs 22,000/month each; each can handle about 15 customers.\n- Churn: 4% monthly, mostly offices that moved or downsized.\n- Top acquisition source so far: referrals from office managers (60% of customers).\n- Tools in use: Google Sheets for tracking, WhatsApp Business for support, Razorpay for billing.\n"
+    }
+  ]
+}

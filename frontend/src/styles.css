@@ -119,3 +119,67 @@ label { display: block; font-weight: 500; font-size: .92rem; }
   .run-head { flex-direction: column; }
   .hero h1 { font-size: 1.6rem; }
 }
+
+/* Command center & business pages */
+.section-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.section-head h2 { margin: 0; }
+.section-head > :last-child:not(:first-child) { margin-left: auto; }
+.small-text { font-size: .8rem; }
+.clamp { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.biz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+.card.biz { display: flex; flex-direction: column; gap: 6px; }
+a.card.biz:hover { border-color: var(--accent); }
+.new-biz { border-style: dashed; }
+.new-biz input, .new-biz textarea { margin-top: 0; }
+.new-biz button { align-self: flex-start; }
+.stage-lead { border-left: 3px solid var(--accent); }
+.stage-review { border-left: 3px solid var(--live); }
+.run-title { display: flex; flex-direction: column; min-width: 0; }
+.run-title .muted { font-size: .85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.run-list .small-text { margin-left: auto; white-space: nowrap; }
+
+.business { display: flex; flex-direction: column; gap: 26px; }
+.back { font-size: .88rem; display: inline-block; margin-bottom: 6px; }
+.back:hover { color: var(--accent); }
+.row { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; }
+select { font: inherit; width: 100%; padding: 10px 12px; margin-top: 6px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text); }
+.library { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+.meter { height: 6px; background: var(--border); border-radius: 999px; overflow: hidden; margin-bottom: 12px; }
+.meter span { display: block; height: 100%; background: var(--accent); }
+.doc-list { list-style: none; padding: 0; margin: 0; }
+.doc-list li { border-top: 1px solid var(--border); padding: 8px 0; }
+.doc-row { display: flex; align-items: center; gap: 10px; }
+.doc-row .muted { margin-left: auto; }
+.doc-preview { max-height: 320px; overflow: auto; padding: 8px 12px; margin-top: 8px; background: var(--bg); border-radius: 8px; }
+button.link { background: none; border: none; padding: 0; color: var(--text); text-align: left; font-weight: 500; }
+button.link:hover { color: var(--accent); }
+button.danger, button.link.danger { color: var(--bad); }
+.tag { font-size: .72rem; padding: 2px 8px; border-radius: 6px; background: var(--border); text-transform: uppercase; letter-spacing: .03em; white-space: nowrap; }
+.tag.sop { background: var(--ok-bg); color: var(--accent); }
+.tag.knowledge { background: var(--live-bg); color: var(--live); }
+
+/* Run tabs & activity log */
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); }
+.tabs button { border: none; border-bottom: 2px solid transparent; border-radius: 0; background: none; color: var(--muted); }
+.tabs button.active { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
+.count { font-size: .75rem; background: var(--border); border-radius: 999px; padding: 1px 7px; margin-left: 4px; }
+.activity { display: flex; flex-direction: column; gap: 14px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.stat { display: flex; flex-direction: column; gap: 2px; padding: 14px; }
+.stat strong { font-size: 1.4rem; font-variant-numeric: tabular-nums; }
+.activity .card { overflow-x: auto; }
+.log { width: 100%; border-collapse: collapse; font-size: .85rem; }
+.log th { text-align: left; color: var(--muted); font-weight: 500; padding: 6px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.log td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.log td:first-child, .log td:nth-child(2) { white-space: nowrap; }
+.log .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.log .detail { min-width: 180px; }
+.tag.finished { background: var(--ok-bg); color: var(--accent); }
+.tag.started, .tag.status, .tag.context { background: var(--border); }
+.tag.failed { background: var(--bad-bg); color: var(--bad); }
+.tag.feedback, .tag.approved { background: var(--live-bg); color: var(--live); }
+
+@media (max-width: 760px) {
+  .library, .row { grid-template-columns: 1fr; }
+  .run-list .small-text { display: none; }
+}
